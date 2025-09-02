@@ -1,14 +1,14 @@
 object pepe {
     var diasFaltados = 0
-    var  categoria = cadete 
-    var  tipoResultados = bonoFijo
-    var  tipoPrensentismo = presentismoNormal
+    var categoria = cadete 
+    var tipoResultados = bonoFijo
+    var tipoPrensentismo = presentismoNormal
     
     method obtenerNeto() = categoria.neto()
     method diasFaltados() = diasFaltados
     
     method agregarFaltas(faltas){
-        diasFaltados = diasFaltados + faltas
+        diasFaltados += faltas
     }
 
     method calcularSueldo() {
@@ -25,14 +25,53 @@ object pepe {
         tipoResultados = _tipoBono
     }
 }
+//------------------Adicional Sofia------------------
+object sofia {
+    var categoria = cadete
+    var tipoResultados = bonoFijo
+    
+    method obtenerNeto() = categoria.neto()
 
+    method calcularSueldo() {
+        return self.obtenerNeto()*1.3 + tipoResultados.bono(self)
+    }
+
+    method actualizarCategoria(_categoria) {
+        categoria = _categoria
+    }
+    method actualizarBonoResultado(_tipoBono) {
+        tipoResultados = _tipoBono
+    }
+}
+//------------------Adicional Roque------------------
+object roque {
+    const neto = 28000
+    var diasFaltados = 0
+    var tipoResultados = bonoNulo
+
+    method obtenerNeto() = neto
+    method diasFaltados() = diasFaltados
+
+    method agregarFaltas(faltas){
+        diasFaltados += faltas
+    }
+
+    method actualizarBonoResultado(_tipoBono) {
+        tipoResultados = _tipoBono
+    }    
+    method calcularSueldo() {
+        return neto + tipoResultados.bono(self) + 9000
+    }
+}
+
+// ------------------Categorias------------------
 object gerente {
     method neto() = 15000
 }
 object cadete {
     method neto() = 20000
 }
-
+// ------------------Resultados------------------
 object bonoNulo {
     method bono(empleado) = 0
 }
@@ -42,7 +81,7 @@ object bonoFijo {
 object bonoPorcentaje {
     method bono(empleado) = empleado.obtenerNeto() * 0.1
 }
-
+// ------------------Presentismos------------------
 object presentismoNulo {
     method presentismo(empleado) = 0
 }
