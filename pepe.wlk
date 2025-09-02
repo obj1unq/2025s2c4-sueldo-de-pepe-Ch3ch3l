@@ -1,8 +1,8 @@
 object pepe {
     var diasFaltados = 0
     var categoria = cadete 
-    var tipoResultados = bonoFijo
-    var tipoPrensentismo = presentismoNormal
+    var tipoResultados = bonoNulo
+    var tipoPrensentismo = presentismoNulo
     
     method obtenerNeto() = categoria.neto()
     method diasFaltados() = diasFaltados
@@ -28,12 +28,12 @@ object pepe {
 //------------------Adicional Sofia------------------
 object sofia {
     var categoria = cadete
-    var tipoResultados = bonoFijo
+    var tipoResultados = bonoNulo
     
-    method obtenerNeto() = categoria.neto()
+    method obtenerNeto() = categoria.neto()*1.3
 
     method calcularSueldo() {
-        return self.obtenerNeto()*1.3 + tipoResultados.bono(self)
+        return self.obtenerNeto() + tipoResultados.bono(self)
     }
 
     method actualizarCategoria(_categoria) {
@@ -45,22 +45,37 @@ object sofia {
 }
 //------------------Adicional Roque------------------
 object roque {
+
     const neto = 28000
-    var diasFaltados = 0
     var tipoResultados = bonoNulo
 
     method obtenerNeto() = neto
-    method diasFaltados() = diasFaltados
-
-    method agregarFaltas(faltas){
-        diasFaltados += faltas
-    }
 
     method actualizarBonoResultado(_tipoBono) {
         tipoResultados = _tipoBono
     }    
     method calcularSueldo() {
         return neto + tipoResultados.bono(self) + 9000
+    }
+}
+//------------------Adicional Ernesto------------------
+object ernesto {
+    
+    const diasFaltados = 0
+    var compañeroTrabajo = pepe
+    var tipoPresentismo = presentismoNulo
+
+    method obtenerNeto() = compañeroTrabajo.obtenerNeto()
+    method diasFaltados() = diasFaltados
+
+    method actualizarCompañero(_compañero) {
+        compañeroTrabajo = _compañero
+    }
+    method actualizarBonoPresentismo(_tipoPresentismo) {
+        tipoPresentismo = _tipoPresentismo
+    }
+    method calcularSueldo() {
+        return self.obtenerNeto() + tipoPresentismo.presentismo(self)
     }
 }
 
@@ -70,6 +85,31 @@ object gerente {
 }
 object cadete {
     method neto() = 20000
+}
+// ------------Categorias Adicionales------------
+object vendedor{
+    const netoSinAumento = 16000
+    var vendioMucho = false
+    
+    method neto() {
+        if (vendioMucho == true) {
+            return netoSinAumento * 1.25
+        } else {
+            return netoSinAumento
+        }
+    }
+    method activarAumento() {
+        vendioMucho = true
+    }
+    method desactivarAumento() {
+        vendioMucho = false
+    }
+}
+
+object medioTiempo {
+    method medioTiempo(categoria) {
+        return categoria.neto() * 0.5
+    }
 }
 // ------------------Resultados------------------
 object bonoNulo {
